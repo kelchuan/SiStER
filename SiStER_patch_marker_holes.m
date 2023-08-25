@@ -1,4 +1,4 @@
-function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm)
+function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm)
 % function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm)
 %
 % seeds new markers in all quadrants where marker density has fallen below
@@ -51,7 +51,12 @@ te_fix=[]; % temperature
 sxx_fix=[]; % stress
 sxy_fix=[]; % stress
 sr_fix=[]; % strain rate
-   
+%finite strain
+ep1_xxm_fix = [];
+ep1_yym_fix = [];
+ep1_xym_fix = [];
+ep1_yxm_fix = [];
+
 if ~isempty(iicr) % if there are critical quadrants
          
     for c=1:length(iicr) % go through all critical quadrants
@@ -105,7 +110,10 @@ if ~isempty(iicr) % if there are critical quadrants
         sxx_fix=zeros(1,Nfix);
         sxy_fix=zeros(1,Nfix);
         sr_fix=zeros(1,Nfix);
-        
+        ep1_xxm_fix = zeros(1,Nfix);
+        ep1_yym_fix = zeros(1,Nfix);
+        ep1_xym_fix = zeros(1,Nfix);
+        ep1_yxm_fix = zeros(1,Nfix);
     else
         
 
@@ -121,7 +129,11 @@ if ~isempty(iicr) % if there are critical quadrants
         stress_xx_fix=mean((sxxm(icn==icell & jcn==jcell)));
         stress_xy_fix=mean((sxym(icn==icell & jcn==jcell)));
         strainrate_fix=mean((epsIIm(icn==icell & jcn==jcell)));
-        
+         % assign the greatest finite strain of the markers that are left in the cell 
+        strain1_xxm_fix = max((ep1_xxm(icn==icell & jcn==jcell)));
+        strain1_yym_fix = max((ep1_yym(icn==icell & jcn==jcell)));
+        strain1_xym_fix = max((ep1_xym(icn==icell & jcn==jcell)));
+        strain1_yxm_fix = max((ep1_yxm(icn==icell & jcn==jcell)));
     end
 
     im_fix=[im_fix phase_fix*ones(1,Nfix)];
@@ -131,6 +143,11 @@ if ~isempty(iicr) % if there are critical quadrants
     sxx_fix=[sxx_fix stress_xx_fix*ones(1,Nfix)];
     sxy_fix=[sxy_fix stress_xy_fix*ones(1,Nfix)];
     sr_fix=[sr_fix strainrate_fix*ones(1,Nfix)];
+
+    ep1_xxm_fix = [ep1_xxm_fix strain1_xxm_fix*ones(1,Nfix)];
+    ep1_yym_fix = [ep1_yym_fix strain1_yym_fix*ones(1,Nfix)];
+    ep1_xym_fix = [ep1_xym_fix strain1_xym_fix*ones(1,Nfix)];
+    ep1_yxm_fix = [ep1_yxm_fix strain1_yxm_fix*ones(1,Nfix)];
     
     end
 
@@ -152,6 +169,10 @@ sxxm(Ifix)=sxx_fix;
 sxym(Ifix)=sxy_fix;
 epsIIm(Ifix)=sr_fix;
 
+ep1_xxm(Ifix) = ep1_xxm_fix;
+ep1_yym(Ifix) = ep1_yym_fix;
+ep1_xym(Ifix) = ep1_xym_fix;
+ep1_yxm(Ifix) = ep1_yxm_fix;
 % uncomment to display number of added markers
 %fprintf('\n%d%s%d%s\n', length(Ifix), ' markers added in ', length(iicr), ' cell quadrants.')
    

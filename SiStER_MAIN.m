@@ -10,12 +10,21 @@
 % March 2011 - April 2017
 
 close all
+%<>
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_two_Layers/exp4/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_profiling/'];
+Path_results=['/Users/tian_bc/repos/github/SiStER/dir_Delamination_FSE/exp2/'];
+if exist(Path_results, 'dir')==0
+    sprintf("path not existing")
+    mkdir(Path_results)
+end
+addpath(Path_results)
 
 % INITIALIZATION
 
 % Input File: loads parameter values, model geometry, boundary conditions
 if exist('running_from_SiStER_RUN','var')==0
-    clear 
+    %clear 
     InpFil = input('Input file ? ','s');
 end
 run(InpFil)
@@ -44,6 +53,9 @@ for t=1:Nt % time loop
     
     % USE STRAIN RATE TO UPDATE STRESSES ON MARKERS
     SiStER_update_marker_stresses;
+
+    % update finite strain
+    SiStER_update_finite_strain;
     
     % BUILD UP PLASTIC STRAIN IN YIELDING AREAS IF PLASTICITY IS ACTIVATED
     if (PARAMS.YNPlas==1) 
@@ -55,7 +67,15 @@ for t=1:Nt % time loop
         disp('SAVING SELECTED VARIABLES TO OUTPUT FILE') 
         filename=num2str(t);
         [etam]=SiStER_interp_shear_nodes_to_markers(etas,x,y,xm,ym,icn,jcn); % to visualize viscosity on markers
-        save(filename,'X','Y','vx','vy','p','time','xm','ym','etam','rhom','BC','etan','Tm','im','idm','epsIIm','sxxm','sxym','ep','epNH','icn','jcn','qd','topo_x','topo_y')
+        % saving finite strain tensor (pst)
+        pst.ep1_xxm = ep1_xxm;
+        pst.ep1_xym = ep1_xym;
+        pst.ep1_yym = ep1_yym;
+        pst.ep1_yxm = ep1_yxm;
+        %save(filename,'X','Y','vx','vy','p','time','xm','ym','etam','rhom','rho','BC','etan','Tm','im','idm','epsIIm','sxxm','sxym','ep','epNH','icn','jcn','qd','topo_x','topo_y')
+
+        save([Path_results,filename],'X','Y','vx','vy','p','time','xm','ym','etam','rhom','rho','BC','etan','Tm','im','idm','epsIIm','sxxm','sxym','ep','epNH','icn','jcn','qd','topo_x','topo_y','pst')
+
     end
     
     % SET ADVECTION TIME STEP BASED ON CURRENT FLOW SOLUTION

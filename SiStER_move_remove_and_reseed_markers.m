@@ -20,6 +20,12 @@ sxxm=sxxm(Iin);
 sxym=sxym(Iin);
 epsIIm=epsIIm(Iin);
 
+% finite strain tensor                                                                                                                                                    
+ep1_xxm = ep1_xxm(Iin) ;
+ep1_yym = ep1_yym(Iin) ;
+ep1_xym = ep1_xym(Iin) ;
+ep1_yxm = ep1_yxm(Iin) ;
+
 % locate advected markers with respect to the eulerian grid
 [quad,icn,jcn] = SiStER_locate_markers_in_grid(xm,ym,x,y,dx,dy);
     
@@ -28,7 +34,7 @@ epsIIm=epsIIm(Iin);
 % those new markers immediately get assigned a value of phase (im), index 
 % (idm) and accumulated plastic strain (ep), i.e., the 2 variables that never get
 % passed to nodes. 
-[xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH, epsIIm);    
+[xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm);    
 
 % then they get assigned P, epsII and stresses from grid values
 

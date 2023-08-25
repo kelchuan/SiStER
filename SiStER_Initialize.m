@@ -57,3 +57,9 @@ topo_y=GEOM(1).bot*ones(size(topo_x));
 topo_marker_spacing=mean(diff(topo_x)); % initial mean spacing of topography markers
 
 
+% FINITE PLASTIC STRAIN
+% components of the deformation gradient tensor F
+ep1_xxm = ones(size(ep));  % size(ep) = size(xm)
+ep1_yym = ones(size(ep));
+ep1_xym = zeros(size(ep));
+ep1_yxm = zeros(size(ep));
