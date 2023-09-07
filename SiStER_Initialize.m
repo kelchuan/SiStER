@@ -26,11 +26,12 @@ sxym=sxxm;
 idm=1:length(xm);
 
 % initialize temperature structure on nodes
-T=PARAMS.a0+PARAMS.a1*Y+PARAMS.a2*Y.^2+PARAMS.a3*Y.^3;
-T=T+PARAMS.amp*sin(2*pi*X/PARAMS.lam);
-if PARAMS.ynTreset==1 % reset T=T0 in top layer
-    T(T<PARAMS.T0)=PARAMS.T0;
-end
+%T=PARAMS.a0+PARAMS.a1*Y+PARAMS.a2*Y.^2+PARAMS.a3*Y.^3;
+T=550*ones(size(Y));
+%T=T+PARAMS.amp*sin(2*pi*X/PARAMS.lam);
+%if PARAMS.ynTreset==1 % reset T=T0 in top layer
+%    T(T<PARAMS.T0)=PARAMS.T0;
+%end
 % pass initial nodal T to markers
 [Tm]=SiStER_interp_shear_nodes_to_markers(T,x,y,xm,ym,icn,jcn);
 Tm0=Tm;

@@ -42,7 +42,8 @@ for i=1:Ny
                 dvxdy=0;
             elseif BC.bot(1)==0 % no rollers
                 %dvxdy=-2*vx(i-1,j)/dy(i-1);
-                dvxdy=2.*(BC.bot(4)-vx(i-1,j))/dy(i-1);  %G.Ito needed for tangential velocity on base
+                %dvxdy=2.*(BC.bot(4)-vx(i-1,j))/dy(i-1);  %G.Ito needed for tangential velocity on base
+                dvxdy=2.*(BC.vshear-vx(i-1,j))/dy(i-1);
             end         
             EXY(i,j)= 0.5*(dvxdy + 2*(vy(i,j)-vy(i,j-1))/(dx(j-1)+dx(j)));
             
@@ -102,7 +103,8 @@ for i=1:Ny
             if BC.bot(1)==1 % rollers
                 dvxdy=0;
             elseif BC.bot(1)==0 % no rollers
-                dvxdy=-2*vx(i-1,j)/dy(i-1);
+                                %dvxdy=-2*vx(i-1,j)/dy(i-1);
+                dvxdy=(BC.vshear-vx(i-1,j))/(dy(i-1)/2);
             end
             if BC.bot(2)==0 % vy imposed on bottom (Dirichlet)
                 dvydx=0;
@@ -119,7 +121,8 @@ for i=1:Ny
             if BC.bot(1)==1 % rollers
                 dvxdy=0;
             elseif BC.bot(1)==0 % no rollers
-                dvxdy=-2*vx(i-1,j)/dy(i-1);
+                                %dvxdy=-2*vx(i-1,j)/dy(i-1);
+                dvxdy=(BC.vshear-vx(i-1,j))/(dy(i-1)/2);
             end  
             if BC.bot(2)==0 % vy imposed on bottom (Dirichlet)% rollers
                 dvydx=0;

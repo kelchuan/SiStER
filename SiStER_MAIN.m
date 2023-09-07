@@ -13,7 +13,11 @@ close all
 %<>
 %Path_results=['/Users/tian_bc/repos/github/SiStER/dir_two_Layers/exp4/'];
 %Path_results=['/Users/tian_bc/repos/github/SiStER/dir_profiling/'];
-Path_results=['/Users/tian_bc/repos/github/SiStER/dir_Delamination_FSE/exp2/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_Delamination_FSE/exp2/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_wedge/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_simple_shear/'];
+Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_simple_shear_FSE/'];
+
 if exist(Path_results, 'dir')==0
     sprintf("path not existing")
     mkdir(Path_results)
@@ -23,10 +27,12 @@ addpath(Path_results)
 % INITIALIZATION
 
 % Input File: loads parameter values, model geometry, boundary conditions
-if exist('running_from_SiStER_RUN','var')==0
-    %clear 
-    InpFil = input('Input file ? ','s');
-end
+
+%if exist('running_from_SiStER_RUN','var')==0
+%%clear 
+%InpFil = input('Input file ? ','s');
+%end
+InpFil="SiStER_Input_File_shear_layer.m"
 run(InpFil)
 
 % construct grid and initialize marker / node arrays

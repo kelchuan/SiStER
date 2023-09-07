@@ -28,10 +28,10 @@ Kb=4*meta/(mdx+mdy)^2;
 
 
 % pressure anchor
-%IP=2;
-%JP=3;
-JP=ceil((Nx-1)/2); %G.Ito
 IP=2;
+JP=3;
+%JP=ceil((Nx-1)/2); %G.Ito
+%IP=2;
 
 
 % fill in FD matrix and right-hand side
@@ -186,7 +186,8 @@ for j=1:Nx
                 Lvv(nn)  = Kb;
                 nn = nn+1;
                 
-                R(invx,1)=Kb*BC.left(3);
+                %R(invx,1)=Kb*BC.left(3);
+                R(invx,1)=Kb*PARAMS.velocity_profile(PARAMS.boxheight(i)+dy(i)/2);
             end
             
             if ((j==Nx) && (i<=Ny-1))  %  X-STOKES:  right  boundary
@@ -197,7 +198,8 @@ for j=1:Nx
                 Lvv(nn)  = Kb;
                 nn = nn+1;
                 
-                R(invx,1)=Kb*BC.right(3);
+                %R(invx,1)=Kb*BC.right(3);
+                R(invx,1)=Kb*PARAMS.velocity_profile(PARAMS.boxheight(i)+dy(i)/2);
             end
             
             
@@ -233,7 +235,8 @@ for j=1:Nx
                     Lvv(nn)  = 2*Kc*(1/dy(i)+1/(dy(i)+dy(i+1)));
                     nn = nn+1;
                     
-                    R(invx,1)=2*Kc*(1/dy(i))*BC.top_profile(j);  %G.Ito x-velocity at top boundary;
+                    %R(invx,1)=2*Kc*(1/dy(i))*BC.top_profile(j);  %G.Ito x-velocity at top boundary;
+                    R(invx,1)=0;
                 end
                 
             end
@@ -253,7 +256,8 @@ for j=1:Nx
                     Lvv(nn)  = -2*Kc/(dy(i-1)+dy(i));
                     nn = nn+1;
                     
-                    R(invx,1)=2*Kc*(1/dy(i))*BC.bot_profile(j);
+                    %R(invx,1)=2*Kc*(1/dy(i))*BC.bot_profile(j);
+                    R(invx,1)=2*Kc*(1/dy(i))*BC.vshear;
                     
                 elseif BC.bot(1)==1 % free slip
                     %                  L(invx,invx)=Kc/(0.5*(dy(i-1)+dy(i)));
