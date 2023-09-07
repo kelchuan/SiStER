@@ -27,11 +27,15 @@
 % ∂vx/∂x = EXX; ∂vy/∂y = - ∂vx/∂x % continuity
 % EXY = .5 (∂vx/∂y + ∂vy/dx)
 % rotation rate om = .5 (∂vx/∂y - ∂vy/dx)
+% rotation rate om = - .5 (∂vx/∂y - ∂vy/dx)
+%<bug> om(i,j)=(-dvxdy + dvydx)/2; (clockwise positive; see SiStER_get_rotation_rate.m )
 %  ∂vx/dy = EXY+om;    ∂vy/dx = ( EXY-om);
 
 dep1_xxm = EXXm;
-dep1_xym = EXYm+om;
-dep1_yxm = EXYm-om;
+%dep1_xym = EXYm+om; %<bug>
+%dep1_yxm = EXYm-om; %<bug>
+dep1_xym = EXYm-om;
+dep1_yxm = EXYm+om;
 dep1_yym = -EXXm; 
 
 %% GET PRINCIPAL STRESS ORIENTATIONS
