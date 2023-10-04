@@ -4,7 +4,10 @@ close all;
 
 list_step = [1,10,20,30,40,60,80,100,120,140,160,180,200];
 %list_step = [1];
-
+Xmin =
+Xmax =
+Ymin =
+Ymax = 
 
 sec_in_yr = 365*24*3600;
 
@@ -29,8 +32,8 @@ for i=1:length(list_step)
     axis ij;
     %axis equal;
     grid off;
-    ylim([0 600]) 
-    xlim([0 500])
+    ylim([Ymin Ymax]) 
+    xlim([Xmin Xmax])
     text_title = sprintf('Density[kg/m3] \n time:%.0f kyrs \n',matData.time/sec_in_yr/1e3)
     title(text_title);
     colorbar
@@ -48,8 +51,8 @@ for i=1:length(list_step)
     %title('MATERIALS \n')
     xlabel('X distance (km)','fontsize',15)
     ylabel('depth (km)','fontsize',15)
-    ylim([0 600]) 
-    xlim([0 500])
+    ylim([Ymin Ymax]) 
+    xlim([Xmin Xmax])
     %movegui(f2,[630 0]);
 
     %f3 = figure('Position',[0 420 600 400]);
@@ -58,8 +61,8 @@ for i=1:length(list_step)
     xlabel('X distance (km)','fontsize',15)
     ylabel('topography (km)','fontsize',15)
     set(gca,'YDir','reverse')
-    ylim([48 52]) 
-    xlim([0 500])
+    %ylim([48 52]) 
+    xlim([Xmin Xmax])
 
 
     %f4 = figure('Position',[630 420 600 400]);
@@ -69,8 +72,8 @@ for i=1:length(list_step)
     ylabel('depth (km)','fontsize',15)
     title('sxy')
     set(gca,'YDir','reverse')
-    ylim([0 600]) 
-    xlim([0 500])
+    ylim([Ymin Ymax]) 
+    xlim([Xmin Xmax])
     colorbar
 
     figure(f3)
@@ -79,8 +82,8 @@ for i=1:length(list_step)
     ylabel('depth (km)','fontsize',15)
     title('etam')
     set(gca,'YDir','reverse')
-    ylim([0 600]) 
-    xlim([0 500])
+    ylim([Ymin Ymax]) 
+    xlim([Xmin Xmax])
     colorbar
 
     pause(0.3)

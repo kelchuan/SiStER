@@ -59,11 +59,20 @@ for i=10:10:max_step
         F22 = matData.pst.ep1_yym(markeri);
         FiniteStrain = [F11 F12; F21 F22];
         %left_stretch_tensor =  (FiniteStrain*FiniteStrain')^0.5;
+        % left stretch tensor Uik = (Fij*Fjk')^(1/2)
+        % take the s
         left_stretch_tensor =  (FiniteStrain*FiniteStrain');%sqrt for only D
         [V, D] = eig(left_stretch_tensor);
-        theta= atan(V(2,1)/V(1,1)); % in rad
+        % need to sort result from eig because it could be random
+        % ref: https://www.mathworks.com/help/matlab/ref/eig.html
+        [Dsortedvec,Dind] = sort(diag(D)); %ascending order
+        Dsorted = D(Dind,Dind);
+        Vsorted = V(:,Dind);
+        % theta= atan(V(2,1)/V(1,1)); % in rad
+        theta= atan(Vsorted(2,2)/V(1,2)); % in rad; angle of the long axis
         FSEscale = 6; % make them look bigger
-        ellipse(FSEscale*sqrt(D(1,1)),FSEscale*sqrt(D(2,2)),theta,matData.xm(markeri)/1e3,matData.ym(markeri)/1e3,'white');
+        %ellipse(FSEscale*sqrt(D(1,1)),FSEscale*sqrt(D(2,2)),theta,matData.xm(markeri)/1e3,matData.ym(markeri)/1e3,'white');
+        ellipse(FSEscale*sqrt(Dsorted(2,2)),FSEscale*sqrt(Dsortedvec(1,1)),theta,matData.xm(markeri)/1e3,matData.ym(markeri)/1e3,'white');
         hold on;
     end
 

@@ -13,7 +13,7 @@ close all
 epsilon_xy = 1e-15;% 1/s
 dvxdy = epsilon_xy;
 L = [0 dvxdy; 0 0] % L per 
-L = [0 0; dvxdy 0] % L per 
+%L = [0 0; dvxdy 0] % L per 
 
 time_end = 30; % Myrs
 sec_in_yr = 365.25*24*3600; %seconds
@@ -36,7 +36,7 @@ Vsorted = V(:,Dind);
 theta= atan(Vsorted(2,2)/V(1,2)); % in rad; angle of the long axis   
 FSEscale = 1; % make them look bigger
 ellipse(FSEscale*sqrt(Dsorted(2,2)),FSEscale*sqrt(Dsortedvec(1,1)),theta,0, ...
-0,'blue',100); hold on;
+0,'blue',100); 
 axis equal;
 
 for i=1:Ntime

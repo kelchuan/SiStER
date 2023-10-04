@@ -16,7 +16,9 @@ close all
 %Path_results=['/Users/tian_bc/repos/github/SiStER/dir_Delamination_FSE/exp2/'];
 %Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_wedge/'];
 %Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_simple_shear/'];
-Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_simple_shear_FSE/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_test/input_simple_shear_FSE/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_results_out/dir_test/input_simple_shear_FSE_correct_om/'];
+%Path_results=['/Users/tian_bc/repos/github/SiStER/dir_results_out/folder_HT_mylonite/input_extension1/'];
 
 if exist(Path_results, 'dir')==0
     sprintf("path not existing")
@@ -32,7 +34,9 @@ addpath(Path_results)
 %%clear 
 %InpFil = input('Input file ? ','s');
 %end
-InpFil="SiStER_Input_File_shear_layer.m"
+%InpFil="SiStER_Input_File_shear_layer.m"
+InpFil="SiStER_Input_File_extension_csdms.m"
+
 run(InpFil)
 
 % construct grid and initialize marker / node arrays

@@ -1,4 +1,4 @@
-function h=ellipse(ra,rb,ang,x0,y0,C,Nb)
+function h=ellipse(ra,rb,ang,x0,y0,C,Nb,linewidth)
 % Ellipse adds ellipses to the current plot
 %
 % ELLIPSE(ra,rb,ang,x0,y0) adds an ellipse with semimajor axis of ra,
@@ -143,7 +143,7 @@ for k=1:maxk
   p=line(radm*cos(the)*co-si*radn*sin(the)+xpos,radm*cos(the)*si+co*radn*sin(the)+ypos);
 
   set(p,'color',C(rem(k-1,size(C,1))+1,:));
-  
+  set(p,'linewidth',linewidth);
   % output handles to each ellipse if output variable specified
   
   if nargout > 0
