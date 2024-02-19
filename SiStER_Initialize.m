@@ -17,6 +17,9 @@ PARAMS.Nphase = Nphase; % for convenience
 ep=zeros(size(xm));
 epNH=ep;
 epsIIm=ones(size(xm));
+% initialize marker velocities (Tian240219)
+vxm = zeros(size(xm));
+vym = zeros(size(xm));
 
 % initialize marker stresses
 sxxm=zeros(size(xm));
@@ -63,3 +66,5 @@ ep1_xxm = ones(size(ep));  % size(ep) = size(xm)
 ep1_yym = ones(size(ep));
 ep1_xym = zeros(size(ep));
 ep1_yxm = zeros(size(ep));
+
+
