@@ -1,4 +1,5 @@
-function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm)
+function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm,vxm,vym]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm,vxm,vym)
+%function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm, ep1_xxm,ep1_yym,ep1_xym,ep1_yxm)
 % function [xm, ym, im, Ifix, mp, ep, idm, Tm, sxxm, sxym, epNH, epsIIm]=SiStER_patch_marker_holes(icn,jcn,quad,Nx,Ny,Mquad,Mquad_crit,xm,ym,x,y,dx,dy,im,ep,idm,Tm,sxxm,sxym,epNH,epsIIm)
 %
 % seeds new markers in all quadrants where marker density has fallen below
@@ -56,7 +57,9 @@ ep1_xxm_fix = [];
 ep1_yym_fix = [];
 ep1_xym_fix = [];
 ep1_yxm_fix = [];
-
+%velocity
+vxm_fix = [];
+vym_fix = [];
 if ~isempty(iicr) % if there are critical quadrants
          
     for c=1:length(iicr) % go through all critical quadrants
@@ -114,6 +117,8 @@ if ~isempty(iicr) % if there are critical quadrants
         ep1_yym_fix = zeros(1,Nfix);
         ep1_xym_fix = zeros(1,Nfix);
         ep1_yxm_fix = zeros(1,Nfix);
+        vxm_fix = zeros(1,Nfix);
+        vym_fix = zeros(1,Nfix);
     else
         
 
@@ -130,10 +135,19 @@ if ~isempty(iicr) % if there are critical quadrants
         stress_xy_fix=mean((sxym(icn==icell & jcn==jcell)));
         strainrate_fix=mean((epsIIm(icn==icell & jcn==jcell)));
          % assign the greatest finite strain of the markers that are left in the cell 
-        strain1_xxm_fix = max((ep1_xxm(icn==icell & jcn==jcell)));
-        strain1_yym_fix = max((ep1_yym(icn==icell & jcn==jcell)));
-        strain1_xym_fix = max((ep1_xym(icn==icell & jcn==jcell)));
-        strain1_yxm_fix = max((ep1_yxm(icn==icell & jcn==jcell)));
+         %strain1_xxm_fix = max((ep1_xxm(icn==icell & jcn==jcell)));
+         %strain1_yym_fix = max((ep1_yym(icn==icell & jcn==jcell)));
+         %strain1_xym_fix = max((ep1_xym(icn==icell & jcn==jcell)));
+         %strain1_yxm_fix = max((ep1_yxm(icn==icell & jcn==jcell)));
+        % assign the average finite strain of the markers that are left in the cell  (Tian240219) maybe should assign mean rather than max
+        strain1_xxm_fix = mean((ep1_xxm(icn==icell & jcn==jcell)));
+        strain1_yym_fix = mean((ep1_yym(icn==icell & jcn==jcell)));
+        strain1_xym_fix = mean((ep1_xym(icn==icell & jcn==jcell)));
+        strain1_yxm_fix = mean((ep1_yxm(icn==icell & jcn==jcell)));
+        % assign the average velocity of the markers that are left in the cell  (Tian240219) 
+        velocity_xm_fix = mean((vxm(icn==icell & jcn==jcell)));
+        velocity_ym_fix = mean((vym(icn==icell & jcn==jcell)));
+
     end
 
     im_fix=[im_fix phase_fix*ones(1,Nfix)];
@@ -148,6 +162,9 @@ if ~isempty(iicr) % if there are critical quadrants
     ep1_yym_fix = [ep1_yym_fix strain1_yym_fix*ones(1,Nfix)];
     ep1_xym_fix = [ep1_xym_fix strain1_xym_fix*ones(1,Nfix)];
     ep1_yxm_fix = [ep1_yxm_fix strain1_yxm_fix*ones(1,Nfix)];
+
+    vxm_fix = [vxm_fix velocity_xm_fix*ones(1,Nfix)];
+    vym_fix = [vym_fix velocity_ym_fix*ones(1,Nfix)];
     
     end
 
@@ -173,6 +190,9 @@ ep1_xxm(Ifix) = ep1_xxm_fix;
 ep1_yym(Ifix) = ep1_yym_fix;
 ep1_xym(Ifix) = ep1_xym_fix;
 ep1_yxm(Ifix) = ep1_yxm_fix;
+
+vxm(Ifix) = vxm_fix;
+vym(Ifix) = vym_fix;
 % uncomment to display number of added markers
 %fprintf('\n%d%s%d%s\n', length(Ifix), ' markers added in ', length(iicr), ' cell quadrants.')
    
